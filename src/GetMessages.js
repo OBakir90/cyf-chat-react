@@ -1,34 +1,36 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from './Card';
 import AddNewMessage from './AddNewMessage';
 
-const GetMessages = ({message , allMessages }) => {
+const GetMessages = () => {
+   const [allMessages, setAllMessages] = useState([])
+   const handleMessages = (message) => {
+      setAllMessages(message)
+   }
+   useEffect(() => {
+      fetch(`https://taslima-chat-server.glitch.me/messages`)
+         .then(res => res.json())
+         .then(data => handleMessages(data))
+   }, [allMessages])
 
+   return (
 
-useEffect(()=>{
-fetch(`https://taslima-chat-server.glitch.me/messages`)
-.then(res=> res.json())
-.then(data => message(data))
-}, [allMessages])
+      <div><Card messages={allMessages} />
 
-return(
+      </div>
 
-   <div><Card messages= {allMessages} />
+      //     <div>
 
-   </div> 
-   
-//     <div>
-        
-// {allMessages.map(message =>{
-//     return (
-    
-//             <div>
-//         <p>{message.from}</p>
-//         <p>{message.text}</p>
-//    </div> )
-// })}
-//     </div>
-)
+      // {allMessages.map(message =>{
+      //     return (
+
+      //             <div>
+      //         <p>{message.from}</p>
+      //         <p>{message.text}</p>
+      //    </div> )
+      // })}
+      //     </div>
+   )
 }
 
 export default GetMessages
